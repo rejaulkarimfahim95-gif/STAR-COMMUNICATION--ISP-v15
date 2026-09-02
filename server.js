@@ -17,7 +17,7 @@ app.use(express.json());
 
 const PORT=process.env.PORT||5000;
 const SECRET=process.env.JWT_SECRET||"CHANGE_ME_BEFORE_PRODUCTION";
-const dbPath=path.resolve(__dirname, process.env.DB_FILE||"../../database/star_communication.db");
+const dbPath=process.env.DB_FILE||"/var/data/star_communication.db";
 const db=new Database(dbPath);
 db.pragma("journal_mode = WAL");
 
@@ -76,7 +76,21 @@ function auth(req,res,next){
 }
 function customer(id){return db.prepare("SELECT * FROM customers WHERE id=?").get(id)}
 
-app.get("/api/health",(req,res)=>res.json({ok:true,app:"STAR COMMUNICATION V16 API",time:new Date().toISOString()}));
+app.get("/api/health",(req,res)=>res.json({ok:true,app:"STAR COMMUNICATION ISP ADMIN PRO V19",time:new Date().toISOString()}));
+app.get("/api/monitoring",auth,(req,res)=>{
+ const one=(sql)=>db.prepare(sql).get();
+ const customers=one("SELECT COUNT(*) count FROM customers").count;
+ const paid=one("SELECT COUNT(*) count FROM customers WHERE payment_status=\"Paid\"").count;
+ const unpaid=one("SELECT COUNT(*) count FROM customers WHERE payment_status=\"Unpaid\"").count;
+ const expired=one("SELECT COUNT(*) count FROM customers WHERE payment_status=\"Expired\"").count;
+ const inactive=one("SELECT COUNT(*) count FROM customers WHERE service_status=\"Inactive\"").count;
+ const collection=one("SELECT COALESCE(SUM(amount),0) total FROM payments").total;
+ const income=one("SELECT COALESCE(SUM(amount),0) total FROM incomes").total;
+ const expense=one("SELECT COALESCE(SUM(amount),0) total FROM expenses").total;
+ const mikrotik=one("SELECT COUNT(*) count FROM mikrotik_devices").count;
+ const olt=one("SELECT COUNT(*) count FROM olt_devices").count;
+ res.json({server:true,customers,paid,unpaid,expired,inactive,collection,income,expense,profit:collection+income-expense,mikrotik,olt,checked_at:new Date().toISOString()});
+});
 app.get("/",(req,res)=>{ const f=path.join(frontendPath,"index.html"); if(fs.existsSync(f)) return res.sendFile(f); res.json({ok:true,app:"STAR COMMUNICATION V16 API",status:"Online"}); });
 
 app.post("/api/auth/login",(req,res)=>{

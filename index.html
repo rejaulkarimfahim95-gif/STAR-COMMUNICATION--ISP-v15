@@ -228,8 +228,13 @@ function expenseForm(){financeForm('expense')}
 function saveFinance(type){
  let source=document.getElementById('fsource').value.trim(),amount=Number(document.getElementById('famount').value),date=document.getElementById('fdate').value,note=document.getElementById('fnote').value;
  if(!source||!amount||amount<=0){alert('Please enter source/category and amount');return}
- if(type==='income')db.incomes.unshift({id:Date.now(),source,amount,date,note}); else db.expenses.unshift({id:Date.now(),category:source,amount,date,note});
- save();closeModal();go(type)}
+ if(!TOKEN){alert('Database login required');return}
+ try{
+  const path=type==='income'?'/income':'/expenses';
+  const body=type==='income'?{source,amount,income_date:date,note}:{category:source,amount,expense_date:date,note};
+  await api(path,{method:'POST',body:JSON.stringify(body)});
+  await syncFromBackend();closeModal();go(type);alert((type==='income'?'Income':'Expense')+' saved permanently.');
+ }catch(e){alert('Save failed: '+e.message)} }
 function profitPage(){
  let collection=db.payments.reduce((a,x)=>a+Number(x.amount||0),0),income=db.incomes.reduce((a,x)=>a+Number(x.amount||0),0),expense=db.expenses.reduce((a,x)=>a+Number(x.amount||0),0),profit=collection+income-expense;
  app.innerHTML=`<div class="head"><div><h1>Profit & Financial Summary</h1><p>Complete financial overview of STAR COMMUNICATION</p></div></div>
@@ -323,6 +328,10 @@ async function saveNetworkDevice(type){
  }catch(e){alert('Backend V17 update এখনও করা হয়নি। আগে V17 backend deploy করতে হবে।')}
 }
 
+async function monitoringPage(){
+ app.innerHTML=`<div class="head"><div><h1>📡 Live Monitoring</h1><p>Real-time overview of server, customers, billing and network devices.</p></div><button class="btn" onclick="monitoringPage()">↻ Refresh</button></div><div id="monbox" class="card"><p>Loading live status...</p></div>`;
+ try{const m=await api('/monitoring');document.getElementById('monbox').innerHTML=`<div class="summary"><div class="mini">Server<b>${m.server?'ONLINE':'OFFLINE'}</b><span>${new Date(m.checked_at).toLocaleTimeString()}</span></div><div class="mini">Customers<b>${m.customers}</b><span>Paid ${m.paid} • Unpaid ${m.unpaid}</span></div><div class="mini">Due Status<b>${m.expired}</b><span>Expired • Inactive ${m.inactive}</span></div><div class="mini">Net Profit<b>${money(m.profit)}</b><span>Collection + Income − Expense</span></div></div><div class="summary"><div class="mini">Bill Collection<b>${money(m.collection)}</b></div><div class="mini">Other Income<b>${money(m.income)}</b></div><div class="mini">Expense<b>${money(m.expense)}</b></div><div class="mini">Network Devices<b>${m.mikrotik+m.olt}</b><span>MikroTik ${m.mikrotik} • OLT ${m.olt}</span></div></div><p class="notice">🟢 Database connected • Customer/billing records are stored on the server. This screen refreshes live from the backend.</p>`}catch(e){document.getElementById('monbox').innerHTML=`<div class="notice">🔴 Backend offline: ${e.message}</div>`}
+}
 function settingsPage(){
  app.innerHTML=`<div class="head"><div><h1>Settings</h1><p>System information and database controls.</p></div></div>
  <div class="card"><h3>STAR COMMUNICATION ISP ADMIN</h3><p><b>Version:</b> V17 REAL BACKEND</p><p><b>Storage:</b> Browser local database</p><p><b>Features:</b> Customers, payment collection, due, expiry, renewal, inactive control, income, expense, profit and backup.</p></div>
@@ -382,6 +391,7 @@ async function syncFromBackend(){
   save();render();
  }catch(e){document.getElementById('apiStatus').textContent='BACKEND: OFFLINE'}
 }
+setInterval(()=>{if(page==='monitoring'&&TOKEN)monitoringPage()},15000);
 window.addEventListener('load',async()=>{
  if(TOKEN){document.getElementById('apiLogin').style.display='none';document.getElementById('apiStatus').textContent='BACKEND: ONLINE';await syncFromBackend();}
  else {document.getElementById('apiBase').value=API;}
