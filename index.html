@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>STAR COMMUNICATION ISP Admin • V12 REAL BACKEND CONNECTED</title>
+<meta name="theme-color" content="#071a35">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
+<title>STAR COMMUNICATION ISP Admin • V15 WORKING VERSION</title>
 <style>
 :root{--nav:#071a35;--blue:#1769d2;--bg:#f3f6fb;--text:#17253a;--muted:#708095;--line:#dfe7f0;--green:#07945f;--orange:#e89008;--red:#dd4038}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
@@ -54,13 +60,24 @@ th{background:#f7f9fc;position:sticky;top:0}
 .loginbox button{width:100%;padding:13px;border:0;border-radius:10px;background:#1769d2;color:white;font-weight:bold;margin-top:8px}
 .api-badge{position:fixed;right:12px;top:12px;z-index:9998;background:#0b9b68;color:#fff;padding:7px 10px;border-radius:20px;font:700 11px Arial}
 </style>
+
+<style>
+.device-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.device-card{background:white;border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 8px 24px rgba(19,48,83,.07)}
+.device-card h3{margin:0 0 7px}.device-status{display:inline-block;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold;background:#e8f7ef;color:#08784d}
+.device-status.off{background:#ffe9e7;color:#b62e29}
+.setting-row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
+.setting-row:last-child{border-bottom:0}
+.small-input{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px}
+</style>
 </head>
 <body>
+<div id="v15-badge" style="position:fixed;right:12px;bottom:12px;z-index:9999;background:#0b2a5b;color:#fff;padding:8px 12px;border-radius:10px;font:600 12px Arial;box-shadow:0 4px 16px rgba(0,0,0,.25)">STAR COMMUNICATION V15</div>
 <div id="apiLogin">
  <div class="loginbox">
-  <h2>STAR COMMUNICATION V14</h2>
+  <h2>STAR COMMUNICATION V15</h2>
   <p>Real Backend Login</p>
-  <input id="apiBase" value="http://localhost:5000/api" placeholder="API URL">
+  <input id="apiBase" value="https://star-communication-v14-backend.onrender.com/api" placeholder="API URL">
   <input id="loginUser" value="admin" placeholder="Username">
   <input id="loginPass" type="password" value="change-me" placeholder="Password">
   <button onclick="apiLogin()">Login to Real Database</button>
@@ -85,9 +102,11 @@ th{background:#f7f9fc;position:sticky;top:0}
 <button data-p="expense">📉 Expense</button>
 <button data-p="profit">💎 Profit & Summary</button>
 <button data-p="backup">🗄 Backup & Data</button>
+<button data-p="mikrotik">🌐 MikroTik</button>
+<button data-p="olt">📡 V-SOL OLT</button>
 <button data-p="settings">⚙️ Settings</button>
 </div></aside>
-<main class="main"><header class="top"><button class="hamb" id="hamb">☰</button><input id="globalSearch" class="search" placeholder="Search customer..."><div class="profile">🔔 <span class="avatar">A</span> Admin</div></header><section id="app" class="content"></section><div style="position:fixed;right:12px;bottom:12px;z-index:9999;background:#081a33;color:#fff;padding:9px 14px;border-radius:20px;font:700 11px Arial;box-shadow:0 8px 24px #0003">STAR COMMUNICATION • V12 REAL BACKEND CONNECTED • LIVE</div></main>
+<main class="main"><header class="top"><button class="hamb" id="hamb">☰</button><input id="globalSearch" class="search" placeholder="Search customer..."><div class="profile">🔔 <span class="avatar">A</span> Admin</div></header><section id="app" class="content"></section><div style="position:fixed;right:12px;bottom:12px;z-index:9999;background:#081a33;color:#fff;padding:9px 14px;border-radius:20px;font:700 11px Arial;box-shadow:0 8px 24px #0003">STAR COMMUNICATION • V15 REAL BACKEND CONNECTED • LIVE</div></main>
 <div class="modal" id="modal"><div class="modalbox" id="modalbox"></div></div>
 <script>
 const seed={customers:[
@@ -124,7 +143,7 @@ function dashboard(){
  let income=db.incomes.reduce((a,x)=>a+Number(x.amount||0),0);
  let expense=db.expenses.reduce((a,x)=>a+Number(x.amount||0),0);
  let monthlyNew=c.filter(x=>monthKey(x.createdAt)===monthKey(new Date().toISOString())).length;
- app.innerHTML=`<div class="head"><div><span class="kicker">● LIVE ADMIN SYSTEM • V12</span><h1 style="margin-top:10px">STAR COMMUNICATION • PREMIUM ADMIN</h1><p>Live ISP control center • Billing • Collection • Due • New connections • Income • Expense • Profit</p>
+ app.innerHTML=`<div class="head"><div><span class="kicker">● LIVE ADMIN SYSTEM • V15</span><h1 style="margin-top:10px">STAR COMMUNICATION • PREMIUM ADMIN</h1><p>Live ISP control center • Billing • Collection • Due • New connections • Income • Expense • Profit</p>
     <div class="premium-actions">
       <button class="btn" onclick="addCustomer()">＋ New Connection</button>
       <button class="btn green" onclick="go('collection')">৳ Receive Bill</button>
@@ -132,8 +151,8 @@ function dashboard(){
       <button class="btn gray" onclick="go('backup')">🗄 Backup</button>
     </div></div><button class="btn" onclick="addCustomer()">+ New Connection</button></div>
  <div style="margin:14px 0;padding:16px;border-radius:14px;background:#102b52;color:#fff;box-shadow:0 10px 24px #102b5222">
-<b style="font-size:18px">🚀 STAR COMMUNICATION V12 — Browser Demo</b><br>
-<span style="opacity:.9">এই Version সরাসরি <b>index.html</b> খুললেই চলবে। Backend API/Database integration-এর জন্য project structure পরে connect করা হবে। MikroTik ও OLT এখনো connect করা হয়নি।</span>
+<b style="font-size:18px">🚀 STAR COMMUNICATION V15 — LIVE ISP ADMIN</b><br>
+<span style="opacity:.9">Customers, billing, payment, income, expense, backup, MikroTik, OLT এবং Settings একসাথে। Live MikroTik/OLT control চালাতে device credentials ও network access লাগবে।</span>
 </div><div class="stats">
  <div class="stat blue" onclick="go('customers')">Total Clients<b>${c.length}</b><small>View all clients →</small></div>
  <div class="stat greenbg" onclick="go('paid')">Paid Clients<b>${counts.Paid}</b><small>View paid clients →</small></div>
@@ -310,9 +329,34 @@ function importBackup(input){
 }
 function resetDemo(){if(!confirm('Reset all current data to demo data?'))return;db=JSON.parse(JSON.stringify(seed));db.incomes=[];db.expenses=[];save();go('dashboard')}
 function settingsPage(){
- app.innerHTML=`<div class="head"><div><h1>Settings</h1><p>System information and database controls.</p></div></div>
- <div class="card"><h3>STAR COMMUNICATION ISP ADMIN</h3><p><b>Version:</b> V12 REAL BACKEND CONNECTED</p><p><b>Storage:</b> Browser local database</p><p><b>Features:</b> Customers, payment collection, due, expiry, renewal, inactive control, income, expense, profit and backup.</p></div>
- <div class="card"><h3>How this works</h3><p>All changes are saved automatically in this browser. For real multi-device use, the next production step is a server backend and database with login authentication.</p></div>`;
+ const current=localStorage.getItem('star_api_base')||API||'https://star-communication-v14-backend.onrender.com/api';
+ app.innerHTML=`<div class="head"><div><span class="kicker">⚙️ SYSTEM SETTINGS</span><h1 style="margin-top:10px">Settings</h1><p>App, backend and account controls.</p></div></div>
+ <div class="card"><h3>🔐 Admin Login</h3>
+ <div class="notice">Admin password is checked by the real backend. The app does not store the server password as plain text.</div>
+ <div class="formgrid">
+  <div class="field"><label>Username</label><input id="setUser" value="admin"></div>
+  <div class="field"><label>Current API</label><input id="setApi" value="${current}"></div>
+ </div>
+ <div class="premium-actions"><button class="btn green" onclick="saveApiSetting()">💾 Save API</button><button class="btn red" onclick="logoutApp()">↪ Logout</button></div>
+ </div>
+ <div class="card"><h3>📱 Install App</h3><p>Chrome menu থেকে <b>Add to Home screen</b> / <b>Install app</b> থাকলে সেটি চাপুন।</p><button class="btn" onclick="installPWA()">📲 Install STAR COMMUNICATION</button><span id="installMsg" style="margin-left:10px;font-size:12px;color:#718096"></span></div>
+ <div class="card"><h3>🌐 Network Modules</h3><div class="setting-row"><b>🌐 MikroTik</b><button class="btn gray" onclick="go('mikrotik')">Open</button></div><div class="setting-row"><b>📡 V-SOL OLT</b><button class="btn gray" onclick="go('olt')">Open</button></div></div>
+ <div class="card"><h3>ℹ️ App Information</h3><p><b>STAR COMMUNICATION ISP ADMIN</b></p><p>Version: V15 Install Ready</p><p>Backend: Render V14 API</p></div>`;
+}
+function saveApiSetting(){
+ const v=document.getElementById('setApi').value.trim().replace(/\/$/,'');
+ if(!v){alert('API URL required');return}
+ localStorage.setItem('star_api_base',v); API=v; alert('API URL saved.'); location.reload();
+}
+function logoutApp(){
+ TOKEN=''; localStorage.removeItem('star_api_token'); document.getElementById('apiLogin').style.display='flex'; document.getElementById('apiLogin').querySelector('#loginPass').value=''; document.getElementById('loginMsg').textContent='Logged out';
+}
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;});
+async function installPWA(){
+ const m=document.getElementById('installMsg');
+ if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;m.textContent='Install prompt shown.';}
+ else m.textContent='Chrome menu → Add to Home screen / Install app ব্যবহার করুন।';
 }
 
 function render(){
@@ -331,6 +375,8 @@ function render(){
  else if(page==='profit')profitPage();
  else if(page==='backup')backupPage();
  else if(page==='settings')settingsPage();
+ else if(page==='mikrotik')networkPage();
+ else if(page==='olt')oltPage();
  else dashboard()
 }
 refreshExpiry();save();
@@ -338,7 +384,7 @@ render();
 </script>
 
 <script>
-let API=localStorage.getItem('star_api_base')||'http://localhost:5000/api';
+let API=localStorage.getItem('star_api_base')||'https://star-communication-v14-backend.onrender.com/api';
 let TOKEN=localStorage.getItem('star_api_token')||'';
 async function api(path,opt={}){
  opt.headers={...(opt.headers||{}),'Content-Type':'application/json'};
@@ -371,5 +417,11 @@ window.addEventListener('load',async()=>{
  if(TOKEN){document.getElementById('apiLogin').style.display='none';document.getElementById('apiStatus').textContent='BACKEND: ONLINE';await syncFromBackend();}
  else {document.getElementById('apiBase').value=API;}
 });
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+ window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
 </script>
 </body></html>
