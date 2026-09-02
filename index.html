@@ -127,7 +127,7 @@ function dashboard(){
  let income=db.incomes.reduce((a,x)=>a+Number(x.amount||0),0);
  let expense=db.expenses.reduce((a,x)=>a+Number(x.amount||0),0);
  let monthlyNew=c.filter(x=>monthKey(x.createdAt)===monthKey(new Date().toISOString())).length;
- app.innerHTML=`<div class="head"><div><span class="kicker">● LIVE ADMIN SYSTEM • V12</span><h1 style="margin-top:10px">STAR COMMUNICATION • PREMIUM ADMIN</h1><p>Live ISP control center • Billing • Collection • Due • New connections • Income • Expense • Profit</p>
+ app.innerHTML=`<div class="head"><div><span class="kicker">● LIVE ADMIN SYSTEM • V17</span><h1 style="margin-top:10px">STAR COMMUNICATION • PREMIUM ADMIN</h1><p>Live ISP control center • Billing • Collection • Due • New connections • Income • Expense • Profit</p>
     <div class="premium-actions">
       <button class="btn" onclick="addCustomer()">＋ New Connection</button>
       <button class="btn green" onclick="go('collection')">৳ Receive Bill</button>
