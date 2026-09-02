@@ -88,7 +88,7 @@ th{background:#f7f9fc;position:sticky;top:0}
 <button data-p="backup">🗄 Backup & Data</button>
 <button data-p="network">🌐 MikroTik + V-SOL OLT</button><button data-p="settings">⚙️ Settings</button>
 </div></aside>
-<main class="main"><header class="top"><button class="hamb" id="hamb">☰</button><input id="globalSearch" class="search" placeholder="Search customer..."><div class="profile">🔔 <span class="avatar">A</span> Admin</div></header><section id="app" class="content"></section><div style="position:fixed;right:12px;bottom:12px;z-index:9999;background:#081a33;color:#fff;padding:9px 14px;border-radius:20px;font:700 11px Arial;box-shadow:0 8px 24px #0003">STAR COMMUNICATION • V17 REAL BACKEND • LIVE</div></main>
+<main class="main"><header class="top"><button class="hamb" id="hamb">☰</button><input id="globalSearch" class="search" placeholder="Search customer..."><div class="profile">🔔 <span class="avatar">A</span> Admin</div></header><section id="app" class="content"></section><div style="position:fixed;right:12px;bottom:12px;z-index:9999;background:#081a33;color:#fff;padding:9px 14px;border-radius:20px;font:700 11px Arial;box-shadow:0 8px 24px #0003">STAR COMMUNICATION • V18 PERMANENT DATABASE • LIVE</div></main>
 <div class="modal" id="modal"><div class="modalbox" id="modalbox"></div></div>
 <script>
 const seed={customers:[
@@ -343,8 +343,8 @@ async function saveNetworkDevice(type){
 
 function settingsPage(){
  app.innerHTML=`<div class="head"><div><h1>Settings</h1><p>System information and database controls.</p></div></div>
- <div class="card"><h3>STAR COMMUNICATION ISP ADMIN</h3><p><b>Version:</b> V17 REAL BACKEND</p><p><b>Storage:</b> Browser local database</p><p><b>Features:</b> Customers, payment collection, due, expiry, renewal, inactive control, income, expense, profit and backup.</p></div>
- <div class="card"><h3>How this works</h3><p>All changes are saved automatically in this browser. For real multi-device use, the next production step is a server backend and database with login authentication.</p></div>`;
+ <div class="card"><h3>STAR COMMUNICATION ISP ADMIN</h3><p><b>Version:</b> V18 PERMANENT DATABASE</p><p><b>Storage:</b> Permanent server database (Render)</p><p><b>Features:</b> Customers, payment collection, due, expiry, renewal, inactive control, income, expense, profit and backup.</p></div>
+ <div class="card"><h3>How this works</h3><p>Customers, payments, income and expense are saved in the permanent server database after login. App updates will load the saved data again.</p></div>`;
 }
 
 function render(){
@@ -449,10 +449,10 @@ async function saveNetworkDevice(type){
     password:document.getElementById(p+'Pass').value
   };
   try{
-    var r=await api('/network/'+type,{method:'POST',body:JSON.stringify(body)});
+    var r=await fetch('/api/network/'+type,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     var j=await r.json().catch(()=>({}));
     msg.textContent=r.ok?'✅ Saved successfully':'❌ '+(j.error||'Save failed');
   }catch(e){msg.textContent='❌ Backend connection failed';}
 }
 </script>
-</body></html>
+<script src="persist_patch.js"></script></body></html>
