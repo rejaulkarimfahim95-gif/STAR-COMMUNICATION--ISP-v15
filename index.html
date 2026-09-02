@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg">
-<title>STAR COMMUNICATION ISP Admin • V15 WORKING VERSION</title>
+<title>STAR COMMUNICATION ISP Admin • V16 WORKING VERSION</title>
 <style>
 :root{--nav:#071a35;--blue:#1769d2;--bg:#f3f6fb;--text:#17253a;--muted:#708095;--line:#dfe7f0;--green:#07945f;--orange:#e89008;--red:#dd4038}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
@@ -72,10 +72,10 @@ th{background:#f7f9fc;position:sticky;top:0}
 </style>
 </head>
 <body>
-<div id="v15-badge" style="position:fixed;right:12px;bottom:12px;z-index:9999;background:#0b2a5b;color:#fff;padding:8px 12px;border-radius:10px;font:600 12px Arial;box-shadow:0 4px 16px rgba(0,0,0,.25)">STAR COMMUNICATION V15</div>
+<div id="v15-badge" style="position:fixed;right:12px;bottom:12px;z-index:9999;background:#0b2a5b;color:#fff;padding:8px 12px;border-radius:10px;font:600 12px Arial;box-shadow:0 4px 16px rgba(0,0,0,.25)">STAR COMMUNICATION V16</div>
 <div id="apiLogin">
  <div class="loginbox">
-  <h2>STAR COMMUNICATION V15</h2>
+  <h2>STAR COMMUNICATION V16</h2>
   <p>Real Backend Login</p>
   <input id="apiBase" value="https://star-communication-v14-backend.onrender.com/api" placeholder="API URL">
   <input id="loginUser" value="admin" placeholder="Username">
@@ -104,9 +104,10 @@ th{background:#f7f9fc;position:sticky;top:0}
 <button data-p="backup">🗄 Backup & Data</button>
 <button data-p="mikrotik">🌐 MikroTik</button>
 <button data-p="olt">📡 V-SOL OLT</button>
+<button data-p="network">🌐 MikroTik + OLT</button>
 <button data-p="settings">⚙️ Settings</button>
 </div></aside>
-<main class="main"><header class="top"><button class="hamb" id="hamb">☰</button><input id="globalSearch" class="search" placeholder="Search customer..."><div class="profile">🔔 <span class="avatar">A</span> Admin</div></header><section id="app" class="content"></section><div style="position:fixed;right:12px;bottom:12px;z-index:9999;background:#081a33;color:#fff;padding:9px 14px;border-radius:20px;font:700 11px Arial;box-shadow:0 8px 24px #0003">STAR COMMUNICATION • V15 REAL BACKEND CONNECTED • LIVE</div></main>
+<main class="main"><header class="top"><button class="hamb" id="hamb">☰</button><input id="globalSearch" class="search" placeholder="Search customer..."><div class="profile">🔔 <span class="avatar">A</span> Admin</div></header><section id="app" class="content"></section><div style="position:fixed;right:12px;bottom:12px;z-index:9999;background:#081a33;color:#fff;padding:9px 14px;border-radius:20px;font:700 11px Arial;box-shadow:0 8px 24px #0003">STAR COMMUNICATION • V16 REAL BACKEND CONNECTED • LIVE</div></main>
 <div class="modal" id="modal"><div class="modalbox" id="modalbox"></div></div>
 <script>
 const seed={customers:[
@@ -143,7 +144,7 @@ function dashboard(){
  let income=db.incomes.reduce((a,x)=>a+Number(x.amount||0),0);
  let expense=db.expenses.reduce((a,x)=>a+Number(x.amount||0),0);
  let monthlyNew=c.filter(x=>monthKey(x.createdAt)===monthKey(new Date().toISOString())).length;
- app.innerHTML=`<div class="head"><div><span class="kicker">● LIVE ADMIN SYSTEM • V15</span><h1 style="margin-top:10px">STAR COMMUNICATION • PREMIUM ADMIN</h1><p>Live ISP control center • Billing • Collection • Due • New connections • Income • Expense • Profit</p>
+ app.innerHTML=`<div class="head"><div><span class="kicker">● LIVE ADMIN SYSTEM • V16</span><h1 style="margin-top:10px">STAR COMMUNICATION • PREMIUM ADMIN</h1><p>Live ISP control center • Billing • Collection • Due • New connections • Income • Expense • Profit</p>
     <div class="premium-actions">
       <button class="btn" onclick="addCustomer()">＋ New Connection</button>
       <button class="btn green" onclick="go('collection')">৳ Receive Bill</button>
@@ -151,7 +152,7 @@ function dashboard(){
       <button class="btn gray" onclick="go('backup')">🗄 Backup</button>
     </div></div><button class="btn" onclick="addCustomer()">+ New Connection</button></div>
  <div style="margin:14px 0;padding:16px;border-radius:14px;background:#102b52;color:#fff;box-shadow:0 10px 24px #102b5222">
-<b style="font-size:18px">🚀 STAR COMMUNICATION V15 — LIVE ISP ADMIN</b><br>
+<b style="font-size:18px">🚀 STAR COMMUNICATION V16 — LIVE ISP ADMIN</b><br>
 <span style="opacity:.9">Customers, billing, payment, income, expense, backup, MikroTik, OLT এবং Settings একসাথে। Live MikroTik/OLT control চালাতে device credentials ও network access লাগবে।</span>
 </div><div class="stats">
  <div class="stat blue" onclick="go('customers')">Total Clients<b>${c.length}</b><small>View all clients →</small></div>
@@ -328,37 +329,59 @@ function importBackup(input){
  const r=new FileReader();r.onload=e=>{try{const data=JSON.parse(e.target.result);if(!data.customers)throw Error();db=data;if(!Array.isArray(db.payments))db.payments=[];if(!Array.isArray(db.incomes))db.incomes=[];if(!Array.isArray(db.expenses))db.expenses=[];save();alert('Backup imported successfully');go('dashboard')}catch(err){alert('Invalid backup file')}};r.readAsText(file);
 }
 function resetDemo(){if(!confirm('Reset all current data to demo data?'))return;db=JSON.parse(JSON.stringify(seed));db.incomes=[];db.expenses=[];save();go('dashboard')}
+function networkPage(){
+ app.innerHTML=`<div class="head"><div><h1>🌐 MikroTik + V-SOL OLT</h1><p>Network device settings and connection status.</p></div><button class="btn" onclick="loadNetworkDevices()">↻ Refresh</button></div>
+ <div class="health" id="networkCards"><div class="mini"><b>Loading...</b><span>Network devices</span></div></div>
+ <div class="card"><h3>➕ Add MikroTik</h3><div class="formgrid">
+ <div class="field"><label>Name</label><input id="mtName" placeholder="Main MikroTik"></div>
+ <div class="field"><label>Host / IP</label><input id="mtHost" placeholder="192.168.88.1"></div>
+ <div class="field"><label>API Port</label><input id="mtPort" type="number" value="8728"></div>
+ <div class="field"><label>Username</label><input id="mtUser" placeholder="admin"></div>
+ <div class="field"><label>Password</label><input id="mtPass" type="password"></div>
+ </div><div class="actions"><button class="btn green" onclick="addMikrotik()">Save MikroTik</button></div></div>
+ <div class="card"><h3>➕ Add V-SOL OLT</h3><div class="formgrid">
+ <div class="field"><label>Name</label><input id="oltName" placeholder="Main OLT"></div>
+ <div class="field"><label>Brand / Model</label><input id="oltBrand" value="V-SOL V1600D4-DP"></div>
+ <div class="field"><label>Host / IP</label><input id="oltHost" placeholder="192.168.1.10"></div>
+ <div class="field"><label>Username</label><input id="oltUser" placeholder="admin"></div>
+ <div class="field"><label>Password</label><input id="oltPass" type="password"></div>
+ </div><div class="actions"><button class="btn green" onclick="addOlt()">Save OLT</button></div></div>
+ <div class="notice">⚠️ এখানে device যোগ করা ও connection test থাকবে। সত্যিকারের MikroTik/OLT control চালাতে device-এর IP, login এবং Render/server থেকে network access লাগবে।</div>`;
+ loadNetworkDevices();
+}
+async function loadNetworkDevices(){
+ const el=document.getElementById('networkCards'); if(!el)return;
+ try{
+  const d=await api('/network/devices');
+  const mt=d.mikrotik||[], olt=d.olt||[];
+  el.innerHTML=`<div class="mini"><span>MikroTik</span><b>${mt.length}</b></div><div class="mini"><span>V-SOL OLT</span><b>${olt.length}</b></div>`;
+  const old=document.getElementById('deviceList'); if(old)old.remove();
+  const card=document.createElement('div');card.className='card';card.id='deviceList';
+  card.innerHTML='<h3>Configured Devices</h3><div class="tablewrap"><table><thead><tr><th>Type</th><th>Name</th><th>Host</th><th>Port/Brand</th><th>Status</th><th>Action</th></tr></thead><tbody>'+
+   mt.map(x=>`<tr><td>MikroTik</td><td>${esc(x.name)}</td><td>${esc(x.host)}</td><td>${x.api_port||8728}</td><td><span class="badge ${x.status==='Connected'?'paid':'unpaid'}">${esc(x.status||'Not Connected')}</span></td><td><button class="btn" onclick="testDevice('mikrotik',${x.id})">Test</button> <button class="btn red" onclick="deleteDevice('mikrotik',${x.id})">Delete</button></td></tr>`).join('')+
+   olt.map(x=>`<tr><td>OLT</td><td>${esc(x.name)}</td><td>${esc(x.host||'')}</td><td>${esc(x.brand||'V-SOL')}</td><td><span class="badge ${x.status==='Connected'?'paid':'unpaid'}">${esc(x.status||'Not Connected')}</span></td><td><button class="btn" onclick="testDevice('olt',${x.id})">Test</button> <button class="btn red" onclick="deleteDevice('olt',${x.id})">Delete</button></td></tr>`).join('')+
+   '</tbody></table></div>'; app.appendChild(card);
+ }catch(e){el.innerHTML='<div class="mini"><b>Network API unavailable</b><span>'+esc(e.message)+'</span></div>'}
+}
+async function addMikrotik(){
+ const x={name:val('mtName'),host:val('mtHost'),api_port:Number(val('mtPort')||8728),username:val('mtUser'),password:val('mtPass')};
+ if(!x.name||!x.host){alert('Name and Host/IP are required');return}
+ try{await api('/network/mikrotik',{method:'POST',body:JSON.stringify(x)});alert('MikroTik saved');go('network')}catch(e){alert(e.message)}
+}
+async function addOlt(){
+ const x={name:val('oltName'),brand:val('oltBrand'),host:val('oltHost'),username:val('oltUser'),password:val('oltPass')};
+ if(!x.name||!x.host){alert('Name and Host/IP are required');return}
+ try{await api('/network/olt',{method:'POST',body:JSON.stringify(x)});alert('OLT saved');go('network')}catch(e){alert(e.message)}
+}
+async function testDevice(type,id){try{const d=await api(`/network/${type}/${id}/test`,{method:'POST'});alert(d.message||d.status||'Test complete');loadNetworkDevices()}catch(e){alert(e.message)}}
+async function deleteDevice(type,id){if(!confirm('Delete this device?'))return;try{await api(`/network/${type}/${id}`,{method:'DELETE'});loadNetworkDevices()}catch(e){alert(e.message)}}
+function val(id){return (document.getElementById(id)?.value||'').trim()}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function settingsPage(){
- const current=localStorage.getItem('star_api_base')||API||'https://star-communication-v14-backend.onrender.com/api';
- app.innerHTML=`<div class="head"><div><span class="kicker">⚙️ SYSTEM SETTINGS</span><h1 style="margin-top:10px">Settings</h1><p>App, backend and account controls.</p></div></div>
- <div class="card"><h3>🔐 Admin Login</h3>
- <div class="notice">Admin password is checked by the real backend. The app does not store the server password as plain text.</div>
- <div class="formgrid">
-  <div class="field"><label>Username</label><input id="setUser" value="admin"></div>
-  <div class="field"><label>Current API</label><input id="setApi" value="${current}"></div>
- </div>
- <div class="premium-actions"><button class="btn green" onclick="saveApiSetting()">💾 Save API</button><button class="btn red" onclick="logoutApp()">↪ Logout</button></div>
- </div>
- <div class="card"><h3>📱 Install App</h3><p>Chrome menu থেকে <b>Add to Home screen</b> / <b>Install app</b> থাকলে সেটি চাপুন।</p><button class="btn" onclick="installPWA()">📲 Install STAR COMMUNICATION</button><span id="installMsg" style="margin-left:10px;font-size:12px;color:#718096"></span></div>
- <div class="card"><h3>🌐 Network Modules</h3><div class="setting-row"><b>🌐 MikroTik</b><button class="btn gray" onclick="go('mikrotik')">Open</button></div><div class="setting-row"><b>📡 V-SOL OLT</b><button class="btn gray" onclick="go('olt')">Open</button></div></div>
- <div class="card"><h3>ℹ️ App Information</h3><p><b>STAR COMMUNICATION ISP ADMIN</b></p><p>Version: V15 Install Ready</p><p>Backend: Render V14 API</p></div>`;
+ app.innerHTML=`<div class="head"><div><h1>Settings</h1><p>STAR COMMUNICATION V16</p></div></div>
+ <div class="card"><h3>System</h3><p><b>Version:</b> V16 Network Ready</p><p><b>Backend:</b> Real Render API</p><p><b>Network:</b> MikroTik + V-SOL OLT configuration enabled</p></div>
+ <div class="card"><h3>🔐 API</h3><p>Current backend: <code>${esc(API)}</code></p><button class="btn" onclick="syncFromBackend()">↻ Sync Database</button></div>`;
 }
-function saveApiSetting(){
- const v=document.getElementById('setApi').value.trim().replace(/\/$/,'');
- if(!v){alert('API URL required');return}
- localStorage.setItem('star_api_base',v); API=v; alert('API URL saved.'); location.reload();
-}
-function logoutApp(){
- TOKEN=''; localStorage.removeItem('star_api_token'); document.getElementById('apiLogin').style.display='flex'; document.getElementById('apiLogin').querySelector('#loginPass').value=''; document.getElementById('loginMsg').textContent='Logged out';
-}
-let deferredInstallPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;});
-async function installPWA(){
- const m=document.getElementById('installMsg');
- if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;m.textContent='Install prompt shown.';}
- else m.textContent='Chrome menu → Add to Home screen / Install app ব্যবহার করুন।';
-}
-
 function render(){
  if(page==='dashboard')dashboard();
  else if(page==='customers')customers();
@@ -374,6 +397,7 @@ function render(){
  else if(page==='expense')expensePage();
  else if(page==='profit')profitPage();
  else if(page==='backup')backupPage();
+ else if(page==='network')networkPage();
  else if(page==='settings')settingsPage();
  else if(page==='mikrotik')networkPage();
  else if(page==='olt')oltPage();
@@ -421,7 +445,7 @@ window.addEventListener('load',async()=>{
 
 <script>
 if('serviceWorker' in navigator){
- window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+ window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=16').catch(()=>{}));
 }
 </script>
 </body></html>

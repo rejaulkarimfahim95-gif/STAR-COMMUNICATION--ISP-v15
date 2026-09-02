@@ -1,14 +1,15 @@
 {
-  "name": "STAR COMMUNICATION ISP ADMIN",
+  "name": "STAR COMMUNICATION ISP",
   "short_name": "STAR ISP",
-  "start_url": "./",
+  "start_url": "./?v=16",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#eef3f9",
+  "background_color": "#071a35",
   "theme_color": "#071a35",
-  "description": "STAR COMMUNICATION ISP Administration App",
+  "description": "STAR COMMUNICATION ISP Admin",
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "icon.svg?v=16",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
