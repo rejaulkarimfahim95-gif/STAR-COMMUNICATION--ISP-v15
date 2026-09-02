@@ -1,17 +1,10 @@
 {
-  "name": "STAR COMMUNICATION ISP ADMIN V17",
-  "short_name": "STAR ISP V17",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#eef3f9",
-  "theme_color": "#071a35",
-  "description": "STAR COMMUNICATION ISP Admin V17",
-  "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
+  "name":"STAR COMMUNICATION ISP ADMIN",
+  "short_name":"STAR ISP",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#eef3f9",
+  "theme_color":"#071a35",
+  "description":"STAR COMMUNICATION ISP Admin V16",
+  "icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
 }
