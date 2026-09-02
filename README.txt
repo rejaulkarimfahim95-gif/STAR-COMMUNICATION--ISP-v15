@@ -1,18 +1,11 @@
-STAR COMMUNICATION ISP ADMIN PRO V19
+STAR COMMUNICATION ISP ADMIN V15 PRO FINAL
 
-Permanent server database + professional live monitoring.
+READY PROJECT — upload the files/folders exactly as packaged.
 
-Features:
-- Customer add/edit/delete stored on server database
-- Payment and billing history stored on server
-- Income and Expense stored on server
-- Automatic expiry status on backend
-- Live Monitoring dashboard with 15-second refresh
-- MikroTik / V-SOL OLT device records and reachability tests
-- Login authentication
-- PWA install support
+Features: Dashboard, Customers, Paid/Unpaid/Expired, Due, Payment History, Bill Collection, New Connections, Income, Expense, Profit, Backup, MikroTik + V-SOL OLT network reachability, Live Monitoring, Login.
 
-Render:
-- This package includes render.yaml with a persistent disk at /var/data.
-- Persistent disk is required for the bundled SQLite database.
-- Set ADMIN_PASSWORD and JWT_SECRET in Render environment settings.
+IMPORTANT: Do not open public/index.html directly from the phone. The app must be served by the Render Web Service so /api connects to the backend.
+
+Permanent SQLite storage requires the Render persistent disk in render.yaml. Render Free Web Services do not support persistent disks; upgrade the service when Render asks.
+
+Default login: admin / change-me, unless Render environment variables ADMIN_USERNAME / ADMIN_PASSWORD are changed.

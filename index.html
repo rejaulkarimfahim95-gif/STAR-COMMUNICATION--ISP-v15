@@ -61,7 +61,7 @@ th{background:#f7f9fc;position:sticky;top:0}
  <div class="loginbox">
   <h2>STAR COMMUNICATION V17</h2>
   <p>Real Backend Login</p>
-  <input id="apiBase" value="http://localhost:5000/api" placeholder="API URL">
+  <input id="apiBase" value="/api" placeholder="API URL">
   <input id="loginUser" value="admin" placeholder="Username">
   <input id="loginPass" type="password" value="change-me" placeholder="Password">
   <button onclick="apiLogin()">Login to Real Database</button>
@@ -88,7 +88,7 @@ th{background:#f7f9fc;position:sticky;top:0}
 <button data-p="backup">🗄 Backup & Data</button>
 <button data-p="network">🌐 MikroTik + V-SOL OLT</button><button data-p="settings">⚙️ Settings</button>
 </div></aside>
-<main class="main"><header class="top"><button class="hamb" id="hamb">☰</button><input id="globalSearch" class="search" placeholder="Search customer..."><div class="profile">🔔 <span class="avatar">A</span> Admin</div></header><section id="app" class="content"></section><div style="position:fixed;right:12px;bottom:12px;z-index:9999;background:#081a33;color:#fff;padding:9px 14px;border-radius:20px;font:700 11px Arial;box-shadow:0 8px 24px #0003">STAR COMMUNICATION • V17 REAL BACKEND • LIVE</div></main>
+<main class="main"><header class="top"><button class="hamb" id="hamb">☰</button><input id="globalSearch" class="search" placeholder="Search customer..."><div class="profile">🔔 <span class="avatar">A</span> Admin</div></header><section id="app" class="content"></section><div style="position:fixed;right:12px;bottom:12px;z-index:9999;background:#081a33;color:#fff;padding:9px 14px;border-radius:20px;font:700 11px Arial;box-shadow:0 8px 24px #0003">STAR COMMUNICATION • V15 PRO FINAL • LIVE</div></main>
 <div class="modal" id="modal"><div class="modalbox" id="modalbox"></div></div>
 <script>
 const seed={customers:[
@@ -136,7 +136,7 @@ function dashboard(){
     </div></div><button class="btn" onclick="addCustomer()">+ New Connection</button></div>
  <div style="margin:14px 0;padding:16px;border-radius:14px;background:#102b52;color:#fff;box-shadow:0 10px 24px #102b5222">
 <b style="font-size:18px">🚀 STAR COMMUNICATION V17 — Working Dashboard</b><br>
-<span style="opacity:.9">এই Version সরাসরি <b>index.html</b> খুললেই চলবে। Backend API/Database integration-এর জন্য project structure পরে connect করা হবে। MikroTik ও OLT এখনো connect করা হয়নি।</span>
+<span style="opacity:.9">এই Version server-এর সাথে কাজ করার জন্য তৈরি। Customer, Billing, Due, Payment, Income, Expense এবং Live Monitoring server database ব্যবহার করে। MikroTik/OLT অংশ network reachability test করে; সরাসরি cloud থেকে router/OLT configuration change করে না।</span>
 </div><div class="stats">
  <div class="stat blue" onclick="go('customers')">Total Clients<b>${c.length}</b><small>View all clients →</small></div>
  <div class="stat greenbg" onclick="go('paid')">Paid Clients<b>${counts.Paid}</b><small>View paid clients →</small></div>
@@ -334,8 +334,8 @@ async function monitoringPage(){
 }
 function settingsPage(){
  app.innerHTML=`<div class="head"><div><h1>Settings</h1><p>System information and database controls.</p></div></div>
- <div class="card"><h3>STAR COMMUNICATION ISP ADMIN</h3><p><b>Version:</b> V17 REAL BACKEND</p><p><b>Storage:</b> Browser local database</p><p><b>Features:</b> Customers, payment collection, due, expiry, renewal, inactive control, income, expense, profit and backup.</p></div>
- <div class="card"><h3>How this works</h3><p>All changes are saved automatically in this browser. For real multi-device use, the next production step is a server backend and database with login authentication.</p></div>`;
+ <div class="card"><h3>STAR COMMUNICATION ISP ADMIN</h3><p><b>Version:</b> V15 PRO FINAL</p><p><b>Storage:</b> Server database (persistent when Render Disk is enabled)</p><p><b>Features:</b> Customers, payment collection, due, expiry, renewal, inactive control, income, expense, profit and backup.</p></div>
+ <div class="card"><h3>How this works</h3><p>Customer, payment, income and expense changes are saved to the server database. Use Backup before maintenance or deployment.</p></div>`;
 }
 
 function render(){
@@ -362,7 +362,7 @@ render();
 </script>
 
 <script>
-let API=localStorage.getItem('star_api_base')||'http://localhost:5000/api';
+let API=localStorage.getItem('star_api_base')||'/api';
 let TOKEN=localStorage.getItem('star_api_token')||'';
 async function api(path,opt={}){
  opt.headers={...(opt.headers||{}),'Content-Type':'application/json'};

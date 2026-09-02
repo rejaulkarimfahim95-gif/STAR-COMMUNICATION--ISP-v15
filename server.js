@@ -76,7 +76,7 @@ function auth(req,res,next){
 }
 function customer(id){return db.prepare("SELECT * FROM customers WHERE id=?").get(id)}
 
-app.get("/api/health",(req,res)=>res.json({ok:true,app:"STAR COMMUNICATION ISP ADMIN PRO V19",time:new Date().toISOString()}));
+app.get("/api/health",(req,res)=>res.json({ok:true,app:"STAR COMMUNICATION ISP ADMIN V15 PRO FINAL",time:new Date().toISOString()}));
 app.get("/api/monitoring",auth,(req,res)=>{
  const one=(sql)=>db.prepare(sql).get();
  const customers=one("SELECT COUNT(*) count FROM customers").count;
@@ -116,6 +116,7 @@ app.get("/api/dashboard",auth,(req,res)=>{
 });
 
 app.get("/api/customers",auth,(req,res)=>{
+ db.prepare("UPDATE customers SET payment_status=\'Expired\' WHERE expiry_date IS NOT NULL AND expiry_date < date(\'now\') AND payment_status != \'Paid\'").run();
  const q=(req.query.q||"").trim();
  const status=req.query.status;
  let sql="SELECT * FROM customers WHERE 1=1", params=[];
@@ -208,4 +209,4 @@ app.get("/api/network/devices",auth,(req,res)=>res.json({
  olt:db.prepare("SELECT id,name,brand,host,status FROM olt_devices").all()
 }));
 
-app.listen(PORT,()=>console.log(`STAR COMMUNICATION V13 API running on http://localhost:${PORT}`));
+app.listen(PORT,()=>console.log(`STAR COMMUNICATION ISP ADMIN V15 PRO FINAL running on http://localhost:${PORT}`));
